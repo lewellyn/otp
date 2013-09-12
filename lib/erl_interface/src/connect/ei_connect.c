@@ -132,6 +132,10 @@ static int recv_challenge_ack(int fd,
 static int send_name(int fd, char *nodename, 
 		     unsigned version, unsigned ms); 
 
+#ifdef __QNXNTO__
+static long gethostid(void); /* Not implemented on QNX. */
+#endif
+
 /* Common for both handshake types */
 static int recv_name(int fd, 
 		     unsigned *version,
@@ -1765,3 +1769,11 @@ static int get_cookie(char *buf, int bufsize)
 
     return 1;			/* Success! */
 }
+
+#ifdef __QNXNTO__
+/* QNX does not implement this part of POSIX. */
+/* 0 is a valid value, per POSIX. */
+static long gethostid(void) {
+    return 0;
+}
+#endif
